@@ -42,7 +42,7 @@
   }
   if(isset($_SESSION['email'])){
 			if($_SESSION['type']==0){
-				header('location:indexadmin.php');
+				header('location:admin.php');
 			}
       else if($_SESSION['type']==1){
         include "navbar.php";

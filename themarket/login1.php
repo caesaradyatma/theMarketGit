@@ -32,7 +32,7 @@
 				//alert('sukses bor');
 				$_SESSION['email']=$email;
 				$_SESSION['type']= $type;
-				header('location: indexadmin.php');
+				header('location:admin.php');
 			}
 
 			else{
