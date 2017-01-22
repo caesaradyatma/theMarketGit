@@ -24,11 +24,30 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even){background-color: #f2f2f2}
+
+      th {
+        background-color: #ffcc00;
+        color: white;
+      }
+    </style>
 </head>
 
 <body>
 	<?php
 		include "connectdb/connect.php";
+
 	?>
 	<?php
   $email= $_SESSION['email'];
@@ -79,11 +98,9 @@
               <a href="#orders" data-toggle="tab">Orders</a>
       			</li>
       			<li>
-              <a href="#3a" data-toggle="tab">Tab 3</a>
+              <a href="#transactions" data-toggle="tab">Completed Transactions</a>
       			</li>
-        		<li>
-              <a href="#4a" data-toggle="tab">Tab 4</a>
-      			</li>
+
       		</ul>
 
   			<div class="tab-content clearfix">
@@ -141,18 +158,69 @@
 
     				</div>
     				<div class="tab-pane" id="orders">
-              <h3>ini di isi list orderan dan status</h3>
+              <table>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Buyer Email</th>
+                  <th>Product Name</th>
+                  <th>Order Date</th>
+                  <th>Payment Date</th>
+                  <th>Payment Amount</th>
+                  <th>Status</th><!--paid,unpaid,ship,waitingforshipping-->
+                  <th>Tracking Number</th>
+                  <th>Enter Tracking Number</th>
+                  <th>Update</th>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>nadya@nadya.com</td>
+                  <td>Supreme Hoodie</td>
+                  <td>1/19/2017</td>
+                  <td>2/19/2017</td>
+                  <td>IDR 5000</td>
+                  <td>unpaid</td><!--paid,unpaid,ship,waitingforshipping-->
+                  <td></td>
+                  <td><input type='text' name='#'></td>
+                  <td><input type='submit' name='#' value='Update'></td>
+              </tr>
+
+            </table>
+
               <!--
                 order id, pengorder, quantity, total harga, limit tanggal untuk
                 masukin nomor resi, tombol untuk masukin nomor resi
               -->
     				</div>
-            <div class="tab-pane" id="3a">
-              <h3>ini gatau di isi apa</h3>
+            <div class="tab-pane" id="transactions">
+              <table>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Buyer Email</th>
+                  <th>Product Name</th>
+                  <th>Order Date</th>
+                  <th>Payment Date</th>
+                  <th>Payment Amount</th>
+                  <th>Status</th><!--paid,unpaid,ship,waitingforshipping-->
+                  <th>Tracking Number</th>
+
+
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>nadya@nadya.com</td>
+                  <td>Supreme Hoodie</td>
+                  <td>1/19/2017</td>
+                  <td>2/19/2017</td>
+                  <td>IDR 5000</td>
+                  <td>Shipped</td><!--paid,unpaid,ship,waitingforshipping-->
+                  <td>23353434</td>
+
+
+              </tr>
+
+            </table>
     				</div>
-              <div class="tab-pane" id="4a">
-              <h3>in juga gatau mau di isi apa</h3>
-    				</div>
+
     			</div>
       </div>
           <!-- /.row -->

@@ -1,3 +1,6 @@
+<?php
+  ob_start();
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +49,8 @@
 
 <body>
 	<?php
-		//include "connectdb/connect.php";
+		include "connectdb/connect.php";
+
 	?>
 	<?php
   //get user status
@@ -60,7 +64,7 @@
     echo "<script type='text/javascript'> window.location.replace(\"index.php\");</script>";
   }*/
 
-  /*if(isset($_SESSION['email']) && $_SESSION['type']==0){
+  if(isset($_SESSION['email']) && $_SESSION['type']==0){
 			//if($_SESSION['type']==0){*///apus comment ini biar session jalan
       echo"
           <nav class='navbar navbar-inverse navbar-fixed-top' role='navigation'>
@@ -102,11 +106,11 @@
       /*else if($_SESSION['type']==1){
         include "navbar.php";
       }*/
-  /*} apus comment disini dan 109 biar session jalan
+  } //apus comment disini dan 109 biar session jalan
   else{
       echo "<script type='text/javascript'>window.alert('Please Log in');</script>";
   		header('location:login.html');
-  }*/
+  }
   ?>
   <!-- Page Content -->
   <div class='container'>
@@ -133,64 +137,13 @@
           <li>
             <a href="#products" data-toggle="tab">Products</a>
           </li>
-          <li>
-            <a href="#transactions" data-toggle="tab">Completed Transactions</a>
-          </li>
+
         </ul>
         <br>
 
       <div class="tab-content clearfix">
         <div class="tab-pane active" id="users">
-          <?php
-            /*mulai dari sini sampe line 191 jangan diapapain
-            $email= $_SESSION['email'];
-            $que="SELECT * FROM user ";
-            $value = mysql_query($que); // Send to DB
-            $value = mysql_fetch_array($value); // Get result
-            $id = $value[0];
-            */
-            /*
-            $query = "SELECT * FROM user";
-            $result = mysql_query($query);
 
-            echo "<div class='row text-center'>";
-            echo"<form action='admin.php' method='post'>";
-
-            foreach ($_POST as $key => $value) {
-                $del = "UPDATE user set status= 1 WHERE user_id = '$key'";
-                $delque = mysql_query($del);
-                header("Refresh:0;");
-              }
-
-            while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
-                //$url= $row['pd_path'];
-            echo "
-                <div class='col-md-3 col-sm-6 hero-feature'>
-                    <div class='thumbnail'>
-                        <div class='caption'>
-                            <p>ID: ".$row['user_id']."</p>
-                            <p>First Name: ".$row['user_fname']."</p>
-                            <p>Last Name: ".$row['user_lname']."</p>
-                            <p>Email: ".$row['user_email']."</p>
-                            <p>
-                                <div>
-                                  <input type=\"submit\" class='btn btn-primary btn-lg btn btn-danger' role='button' name=".$row['user_id']." value =\"Remove\" onclick=\"return confirm('Are you sure you want to Remove ".$row['user_fname']."?');\">
-                                </div>
-                                <div style='margin-top:15px'>
-                                  <a class='btn btn-primary btn-lg btn btn-warning' href='#' role='button'>Modify</a>
-                                </div>
-                            </p>
-
-                        </div>
-                    </div>
-                </div>
-
-                ";
-
-            }
-            echo"</form>";
-            echo "</div>";
-            */?>
             <!--ini table buat list user -->
             <!-- Tambahin isinya aja -->
             <table>
@@ -203,24 +156,68 @@
                 <th>Address</th>
                 <th>File Directory</th>
                 <th>Bank Name</th>
+                <th>Account Owner</th>
                 <th>Account Number</th>
+                <th>Status</th>
                 <th>Action</th>
-
               </tr>
+              <?php
+                $query = "SELECT * FROM user";
+                $result = mysql_query($query);//user table
+
+
+                echo"<form action='admin.php' method='post'>";
+
+                foreach ($_POST as $key => $value) {
+                    $del = "UPDATE user set user_status= 1 WHERE user_id = '$key'";
+                    $delque = mysql_query($del);
+                    header("Refresh:0;");
+                }
+
+                while($row = mysql_fetch_array($result)){
+                  //to connect bank account info
+                  $id = $row['user_id'];
+                  $q = "SELECT * FROM account WHERE user_id = $id";
+                  $hasil = mysql_query($q);//account table
+                  $row1 = mysql_fetch_array($hasil);
+
+                  //to display user type
+                  if($row['user_type'] == 1){
+                    $type = "Buyer";
+                  }
+                  else if($row['user_type'] == 0){
+                    $type = "Admin";
+                  }
+                  else if($row['user_type'] == 2){
+                    $type = "Buyer and Seller";
+                  }
+
+                  if($row['user_status'] == 1){
+                    $status = "Suspended";
+                  }
+                  else if($row['user_status'] == 0){
+                    $status = "Active";
+                  }
+
+                  echo"
               <tr>
-                <td>9</td>
-                <td>Buyer & Seller</td>
-                <td>Caesar</td>
-                <td>Adyatma</td>
-                <td>caesar@caesar.com</td>
-                <td>Ciputat</td>
-                <td>user/caesar@caesar.com_9</td>
-                <td>BCA</td>
-                <td>23727310</td>
+                <td>".$row['user_id']."</td>
+                <td>".$type."</td>
+                <td>".$row['user_fname']."</td>
+                <td>".$row['user_lname']."</td>
+                <td>".$row['user_email']."</td>
+                <td>".$row['user_address']."</td>
+                <td>".$row['user_dir']."</td>
+                <td>".$row1['account_bank']."</td>
+                <td>".$row1['account_name']."</td>
+                <td>".$row1['account_number']."</td>
+                <td>".$status."</td>
                 <!-- dibawah ini jadiin tombol buat hyperlink aja -->
-                <td><input type='submit' value='Delete'></td>
+                <td><input type=\"submit\" class='btn btn-primary btn-lg btn btn-danger' role='button' name=".$row['user_id']." value =\"Suspend\" onclick=\"return confirm('Are you sure you want to Remove ".$row['user_fname']."?');\"></td>
 
-              </tr>
+              </tr>";
+            }
+            ?>
             </table>
 
 
@@ -247,127 +244,104 @@
                   <th>Action</th>
                   <th>Update</th>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>5</td>
-                  <td>9</td>
-                  <td>1</td>
-                  <td>1/19/2017</td>
-                  <td>2/19/2017</td>
-                  <td>IDR 5000</td>
-                  <td>unpaid</td><!--paid,unpaid,ship,waitingforshipping-->
-                  <td></td>
-                  <td><select name='#'>
-                    <option value='1'>None</option>
-                    <option value='2'>Paid</option>
-                    <option value='3'>Shipped</option>
-                  </select></td>
-                  <td><input type='submit' name='#' value='Update'></td>
               </tr>
+              <?php
+                $query = "SELECT * FROM order";
+                $result = mysql_query($query);//user table
 
-            </table>
 
-                <!-- jangan diapapain
-                    <form action="admin.php">
-                -->
-                <?php
-                  /*dari sini sampe 278 jangan diapapain
-                  $query = "SELECT * FROM order";
-                  $result = mysql_query($query);
+                echo"<form action='admin.php' method='post'>";
 
-                  foreach ($_POST as $key => $value) {
-                    //-1 = expire
-                    //0 = unpaid
-                    //1 = paid
-                    //2 = shipped
+                foreach ($_POST as $key => $value) {
                     $del = "UPDATE order set status= 1 WHERE user_id = '$key'";
                     $delque = mysql_query($del);
                     header("Refresh:0;");
+                }
+
+                while($row = mysql_fetch_array($result)){
+
+                  //to display order status
+                  if($row['order_status'] == 0){
+                    $order_status = "Unpaid";
+                  }
+                  else if($row['order_status'] == 1){
+                    $order_status = "Paid";
+                  }
+                  else if($row['order_status'] == 2){
+                    $order_status = "Sent";
                   }
 
-                  while($row1 = mysql_fetch_array($result)){   //Creates a loop to loop through results
-
-                    echo"
-                      <tr>
-                        <td>".$row1['order_id']."</td>
-                        <td>".$row1['order_buyerId']."</td>
-                        <td>".$row1['order_sellerId']."</td>
-                        <td>".$row1['order_productId']."</td>
-                        <td>".$row1['order_date']."</td>
-                        <td>".$row1['order_status']."</td>
-                        <td>".$row1['order_tracking']."</td>
-                        <td><select name='#'>
-                          <option value='1'>None</option>
-                          <option value='2'>Paid</option>
-                          <option value='3'>Shipped</option>
-                        </select></td>
-                        <td><input type='submit' name='#' value='Update'></td>
-                    </tr>";
+                  else if($row['order_status'] == 3){
+                    $order_status = "Received";
                   }
-                  */?>
-              <!--</table>
-            </form>-->
-            <
+                  else if($row['order_status'] == 4){
+                    $order_status = "Seller Paid";
+                  }
+
+                  echo"
+              <tr>
+                <td>".$row['order_id']."</td>
+                <td>".$row['order_buyerEmail']."</td>
+                <td>".$row['order_sellerEmail']."</td>
+                <td>".$row['order_date']."</td>
+                <td>".$row['order_paydate']."</td>
+                <td>".$row['order_payAmount']."</td>
+                <td>".$order_status."</td>
+                <td>".$row['order_trackingNum']."</td>
+                <!-- dibawah ini jadiin tombol buat hyperlink aja -->
+                <td><input type=\"submit\" class='btn btn-primary btn-lg btn btn-danger' role='button' name=".$row['user_id']." value =\"Suspend\" onclick=\"return confirm('Are you sure you want to Remove ".$row['user_fname']."?');\"></td>
+
+              </tr>";
+            }
+            ?>
+            </table>
 
           </div>
           <div class="tab-pane" id="products">
             <table>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Image</th>
-                <th>Price</th>
                 <th>Seller ID</th>
+                <th>Category</th>
+                <th>Name</th>
+                <th>Details</th>
+                <th>Price</th>
+                <th>Image</th>
                 <th>Action</th>
 
               </tr>
-              <tr>
-                <td>1</td>
-                <td>Sendal Jepit</td>
-                <td>Image</td>
-                <td>IDR 5000</td>
-                <td>9</td>
-                <td><input type='submit' value='Delete'></td>
+              <?php
+                $query = "SELECT * FROM product";
+                $result = mysql_query($query);//user table
 
-              </tr>
+
+                echo"<form action='admin.php' method='post'>";
+
+                foreach ($_POST as $key => $value) {
+                    $del = "UPDATE product set status = 1 WHERE user_id = '$key'";
+                    $delque = mysql_query($del);
+                    header("Refresh:0;");
+                }
+
+                while($row = mysql_fetch_array($result)){
+
+                  echo"
+                    <tr>
+                      <td>".$row['pd_id']."</td>
+                      <td>".$row['user_id']."</td>
+                      <td>".$row['cat_id']."</td>
+                      <td>".$row['pd_name']."</td>
+                      <td>".$row['pd_details']."</td>
+                      <td>".$row['pd_price']."</td>
+                      <td><img style= 'height:200px; width:200px;'src='".$row['pd_path']."'></td>
+                      <!-- dibawah ini jadiin tombol buat hyperlink aja -->
+                      <td><input type=\"submit\" class='btn btn-primary btn-lg btn btn-danger' role='button' name=".$row['pd_id']." value =\"Remove\" onclick=\"return confirm('Are you sure you want to Remove ".$row['pd_name']."?');\"></td>
+                    </tr>";
+                }
+            ?>
             </table>
           </div>
-            <div class="tab-pane" id="transactions">
-              <table>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Buyer ID</th>
-                  <th>Seller ID</th>
-                  <th>Product ID</th>
-                  <th>Tracking Number</th>
-                  <th>Order Date</th>
-                  <th>Payment Date</th>
-                  <th>Payment Amount</th>
-                  <th>Seller Payment</th>
-                  <th>Action</th>
-                  <th>Update</th>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>5</td>
-                  <td>9</td>
-                  <td>1</td>
-                  <td>237858648</td>
-                  <td>1/19/2017</td>
-                  <td>2/19/2017</td>
-                  <td>IDR 5000</td>
-                  <td>Unpaid</td>
-                  <td><select name='#'>
-                    <option value='1'>Unpaid</option>
-                    <option value='2'>Paid</option>
 
-                  </select></td>
-                  <td><input type='submit' name='#' value='Update'></td>
-              </tr>
-
-            </table>
-
-          </div>
         </div>
     </div>
         <!-- /.row -->

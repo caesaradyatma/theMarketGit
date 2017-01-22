@@ -1,5 +1,6 @@
 <?php
 	include 'connectdb/connect.php';
+	ob_start();
 
 	function login(){
 		//$encryptionMethod = "AES-256-CBC";  // AES is used by the U.S. gov't to encrypt top secret documents.
@@ -23,7 +24,7 @@
           $result = mysql_fetch_array($result); // Get result
           $type = $result[0]; // Save result
 
-		  if($type== 0){//admin
+		  if($type == 0){//admin
 			$result=mysql_query("SELECT count(user_email) as valid from user WHERE user_pass='$pass'");
 			$data=mysql_fetch_assoc($result);
 
@@ -41,7 +42,7 @@
 			}
 		  }
 
-		  else if($type== 1){//user
+		  else if($type== 1 || $type== 2){//user
 
 			$result=mysql_query("SELECT count(user_email) as valid from user WHERE user_pass='$pass'");
 			$data=mysql_fetch_assoc($result);

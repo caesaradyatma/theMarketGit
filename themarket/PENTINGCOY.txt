@@ -1,0 +1,17 @@
+1. bikin paging dan search feature di admin
+2. gak perlu show product id di transaction
+3. confirm ship button bukan admin, di seller
+4. ilangin warning di xampp
+5. combine all code
+6. payment method to seller
+7. report: filter most sold item, most active user *contoh* 
+8. rating: button function pake icon
+9. video pisah2 aja buat buyer, seller, admin
+10. coding submit email miss hari H
+
+order status= 
+		0 = unpaid
+		1 = paid
+		2 = on the way  
+		3 = shipped
+		4 = seller paid

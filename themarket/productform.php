@@ -30,16 +30,7 @@
       <?php
     		include "connectdb/connect.php";
     	?>
-    	<?php//buat nentuin user udh login atau belom
-      $email= $_SESSION['email'];
-      $que="SELECT user_status FROM user WHERE user_email = '$email'";
-        $result = mysql_query($que); // Send to DB
-        $result = mysql_fetch_array($result); // Get result
-        $user_status = $result[0];
-      if($user_status == 0){
-        echo "<script type='text/javascript'>window.alert('You must fill bank account information to access yourshop feature!\nPress OK to fill the form\nPress Cancel to go back');</script>";
-        echo "<script type='text/javascript'> window.location.replace(\"index.php\");</script>";
-      }
+    	<?php
       if(isset($_SESSION['email'])){
     			if($_SESSION['type']==0){
     				header('location:indexadmin.php');
@@ -53,33 +44,7 @@
       			header('location:login.html');
           }
       ?>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
-                <ul class='nav navbar-nav'>
-                    <li>
-                        <a href='indexuser.php'>Home</a>
-                    </li>
-					<li>
-                        <a href='#'><input type='text' placeholder='search for products'></a>
-                    </li>
-                    <li>
-                        <a href='#'>Your Shop</a>
-                    </li>
-                    <li>
-                        <a href='#'>Shopping Cart</a>
-                    </li>
-                    <li>
-                        <a href='logout.php'>Log Out</a>
-                    </li>
-                    <!--<li>
-                        <a href='#'>Contact</a>
-                    </li>-->
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+
 
     <!-- Page Content -->
     <div class='container'>

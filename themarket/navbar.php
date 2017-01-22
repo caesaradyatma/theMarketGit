@@ -20,7 +20,7 @@ echo $_SESSION['email'];
       <div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
           <ul class='nav navbar-nav navbar-left'>
               <li>
-                  <a href='indexuser.php'>Home</a>
+                  <a href='index.php'>Home</a>
               </li>
               <li>
                 <form class="navbar-form navbar-left" action="search.php" method="POST">

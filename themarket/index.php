@@ -40,7 +40,7 @@ error_reporting(E_ERROR | E_PARSE);
 			if($_SESSION['type']==0){//buat admin tp belom ada
 				header('location:indexadmin.php');
 			}
-      else if($_SESSION['type']==1){//registered user
+      else if($_SESSION['type']==1 || $_SESSION['type']==2){//registered user
         include "navbar.php";
       }
   }
@@ -90,12 +90,12 @@ error_reporting(E_ERROR | E_PARSE);
     <div class='container'>
         <?php
           $email= $_SESSION['email'];
-          $que="SELECT user_status FROM user WHERE user_email = '$email'";
+          $que="SELECT user_type FROM user WHERE user_email = '$email'";
             $result = mysql_query($que); // Send to DB
             $result = mysql_fetch_array($result); // Get result
-          $user_status = $result[0];
+          $user_type = $result[0];
 
-          if($user_status == 0){//kalo user belom isi form penjual(bank account)
+          if($user_type != 2){//kalo user belom isi form penjual(bank account)
             echo"
             <header class='jumbotron hero-spacer'>
                 <h1>Welcome to The Market!</h1>
@@ -104,7 +104,7 @@ error_reporting(E_ERROR | E_PARSE);
                 </p>
             </header>";
           }
-          else if($user_status == 1){//kalo user udah isi form penjual
+          else if($user_type == 2){//kalo user udah isi form penjual
             echo "
               welcome back!
             ";//kasih display
